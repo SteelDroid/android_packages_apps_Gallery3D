@@ -83,6 +83,7 @@
                 <data android:mimeType="video/*" />
              </intent-filter>
         </activity>
+
         <activity android:name="com.cooliris.media.CropImage"
             android:screenOrientation="sensor"
             android:configChanges="orientation|keyboardHidden" android:label="@string/crop_label">
@@ -94,6 +95,7 @@
                 <category android:name="android.intent.category.SELECTED_ALTERNATIVE" />
             </intent-filter>
         </activity>
+
         <activity android:name="com.cooliris.media.MovieView"
             android:label="@string/movie_view_label"
             android:configChanges="orientation|keyboardHidden"
@@ -136,11 +138,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <provider android:label="Picasa Web Albums" android:name="com.cooliris.picasa.PicasaContentProvider"
             android:grantUriPermissions="true"
             android:syncable="true"
             android:authorities="com.cooliris.picasa.contentprovider">
         </provider>
+
         <service android:label="Picasa Sync Service" android:name="com.cooliris.picasa.PicasaService">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
