@@ -257,11 +257,11 @@ public final class PicasaDataSource implements DataSource {
         @Column("html_page_url")
         public String htmlPageUrl;
     }
-    
+
     public String[] getDatabaseUris() {
         return new String[] { PicasaContentProvider.ALBUMS_URI.toString(), PicasaContentProvider.PHOTOS_URI.toString()};
     }
-    
+
     public void refresh(final MediaFeed feed, final String[] databaseUris) {
         // Depending on what URI changed, we either need to update the mediasets or the mediaitems of a set.
         if (databaseUris != null && databaseUris.length > 0) {

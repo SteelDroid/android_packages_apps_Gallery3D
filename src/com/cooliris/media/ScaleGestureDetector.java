@@ -185,7 +185,7 @@ public class ScaleGestureDetector {
                 mBottomFingerBeginY = event.getY(0);
                 mTopFingerBeginX = event.getX(1);
                 mTopFingerBeginY = event.getY(1);
-                
+
                 mTopFingerCurrX = mTopFingerBeginX;
                 mTopFingerCurrY = mTopFingerBeginY;
                 mBottomFingerCurrX = mBottomFingerBeginX;
@@ -312,7 +312,7 @@ public class ScaleGestureDetector {
         mTopFingerCurrX = cx1;
         mTopFingerCurrY = cy1;
     }
-    
+
     private void reset() {
         if (mPrevEvent != null) {
             mPrevEvent.recycle();

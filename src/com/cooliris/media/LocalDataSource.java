@@ -49,7 +49,7 @@ public class LocalDataSource implements DataSource {
     public static final String DOWNLOAD_BUCKET_NAME = Environment.getExternalStorageDirectory().toString() + "/" + DOWNLOAD_STRING;
     public static final int CAMERA_BUCKET_ID = getBucketId(CAMERA_BUCKET_NAME);
     public static final int DOWNLOAD_BUCKET_ID = getBucketId(DOWNLOAD_BUCKET_NAME);
-    
+
     /**
      * Matches code in MediaProvider.computeBucketValues. Should be a common
      * function.
@@ -57,7 +57,7 @@ public class LocalDataSource implements DataSource {
     public static int getBucketId(String path) {
         return (path.toLowerCase().hashCode());
     }
-    
+
     private final String mUri;
     private final String mBucketId;
     private boolean mDone;;
@@ -97,7 +97,7 @@ public class LocalDataSource implements DataSource {
                 || mUri.startsWith("file://") ? sThumbnailCache
                 : null;
     }
-    
+
     public void setMimeFilter(boolean includeImages, boolean includeVideos) {
         mIncludeImages = includeImages;
         mIncludeVideos = includeVideos;
@@ -384,7 +384,7 @@ public class LocalDataSource implements DataSource {
             // System.out.println("Apparently not a JPEG");
         }
     }
-    
+
     public static MediaItem createMediaItemFromUri(Context context, Uri target, int mediaType) {
         MediaItem item = null;
         long id = ContentUris.parseId(target);
@@ -442,7 +442,7 @@ public class LocalDataSource implements DataSource {
         }
         return item;
     }
-    
+
     public String[] getDatabaseUris() {
         return new String[] {Images.Media.EXTERNAL_CONTENT_URI.toString(), Video.Media.EXTERNAL_CONTENT_URI.toString()};
     }

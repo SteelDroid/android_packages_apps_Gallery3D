@@ -19,10 +19,8 @@ package com.cooliris.media;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -39,7 +37,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Images.ImageColumns;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -66,19 +63,15 @@ import com.cooliris.app.Res;
 public class CropImage extends MonitoredActivity {
     private static final String TAG = "CropImage";
 
-	public static final int CROP_MSG = 10;	
-    public static final int CROP_MSG_INTERNAL = 100;    
-    
-    private App mApp = null;     
-    
+    public static final int CROP_MSG = 10;
+    public static final int CROP_MSG_INTERNAL = 100;
+
+    private App mApp = null;
+
     // These are various options can be specified in the intent.
-    private Bitmap.CompressFormat mOutputFormat = Bitmap.CompressFormat.JPEG; // only
-                                                                              // used
-                                                                              // with
-                                                                              // mSaveUri
+    private Bitmap.CompressFormat mOutputFormat = Bitmap.CompressFormat.JPEG; // only used with mSaveUri
     private Uri mSaveUri = null;
-    private int mAspectX, mAspectY; // CR: two definitions per line == sad
-                                    // panda.
+    private int mAspectX, mAspectY; // CR: two definitions per line == sad panda.
     private boolean mDoFaceDetection = true;
     private boolean mCircleCrop = false;
     private final Handler mHandler = new Handler();
@@ -101,80 +94,80 @@ public class CropImage extends MonitoredActivity {
     HighlightView mCrop;
 
     static private final HashMap<Context, MediaScannerConnection> mConnectionMap = new HashMap<Context, MediaScannerConnection>();
-    
+
     static public void launchCropperOrFinish(final Context context, final MediaItem item) {
-    	final Bundle myExtras = ((Activity) context).getIntent().getExtras();
-    	String cropValue = myExtras != null ? myExtras.getString("crop") : null;
-    	final String contentUri = item.mContentUri;
-    	if (contentUri == null)
-    		return;
-    	if (cropValue != null) {
-    		Bundle newExtras = new Bundle();
-    		if (cropValue.equals("circle")) {
-    			newExtras.putString("circleCrop", "true");
-    		}
-    		Intent cropIntent = new Intent();
-    		cropIntent.setData(Uri.parse(contentUri));
-    		cropIntent.setClass(context, CropImage.class);
-    		cropIntent.putExtras(newExtras);
-    		// Pass through any extras that were passed in.
-    		cropIntent.putExtras(myExtras);
-    		((Activity) context).startActivityForResult(cropIntent, CropImage.CROP_MSG);
-    	} else {
-    		if (contentUri.startsWith("http://")) {
-    			// This is a http uri, we must save it locally first and
-    			// generate a content uri from it.
-    			final ProgressDialog dialog = ProgressDialog.show(context, context.getResources().getString(Res.string.initializing),
-    					context.getResources().getString(Res.string.running_face_detection), true, false);
-    			if (contentUri != null) {
-    				MediaScannerConnection.MediaScannerConnectionClient client = new MediaScannerConnection.MediaScannerConnectionClient() {
-    					public void onMediaScannerConnected() {
-    						MediaScannerConnection connection = mConnectionMap.get(context);    						
-    						if (connection != null) {
-    							try {
-    								final String downloadDirectoryPath = LocalDataSource.DOWNLOAD_BUCKET_NAME;
-    								File downloadDirectory = new File(downloadDirectoryPath);
-    								downloadDirectory.mkdirs();
-    								final String path = UriTexture.writeHttpDataInDirectory(context, contentUri,
-    										downloadDirectoryPath);
-    								if (path != null) {
-    									connection.scanFile(path, item.mMimeType);
-    								} else {
-    									shutdown("");
-    								}
-    							} catch (Exception e) {
-    								shutdown("");
-    							}
-    						}
-    					}
+        final Bundle myExtras = ((Activity) context).getIntent().getExtras();
+        String cropValue = myExtras != null ? myExtras.getString("crop") : null;
+        final String contentUri = item.mContentUri;
+        if (contentUri == null)
+            return;
+        if (cropValue != null) {
+            Bundle newExtras = new Bundle();
+            if (cropValue.equals("circle")) {
+                newExtras.putString("circleCrop", "true");
+            }
+            Intent cropIntent = new Intent();
+            cropIntent.setData(Uri.parse(contentUri));
+            cropIntent.setClass(context, CropImage.class);
+            cropIntent.putExtras(newExtras);
+            // Pass through any extras that were passed in.
+            cropIntent.putExtras(myExtras);
+            ((Activity) context).startActivityForResult(cropIntent, CropImage.CROP_MSG);
+        } else {
+            if (contentUri.startsWith("http://")) {
+                // This is a http uri, we must save it locally first and
+                // generate a content uri from it.
+                final ProgressDialog dialog = ProgressDialog.show(context, context.getResources().getString(Res.string.initializing),
+                    context.getResources().getString(Res.string.running_face_detection), true, false);
+                if (contentUri != null) {
+                    MediaScannerConnection.MediaScannerConnectionClient client = new MediaScannerConnection.MediaScannerConnectionClient() {
+                    public void onMediaScannerConnected() {
+                        MediaScannerConnection connection = mConnectionMap.get(context);
+                        if (connection != null) {
+                            try {
+                                final String downloadDirectoryPath = LocalDataSource.DOWNLOAD_BUCKET_NAME;
+                                    File downloadDirectory = new File(downloadDirectoryPath);
+                                    downloadDirectory.mkdirs();
+                                    final String path = UriTexture.writeHttpDataInDirectory(context, contentUri,
+                                        downloadDirectoryPath);
+                                    if (path != null) {
+                                        connection.scanFile(path, item.mMimeType);
+                                    } else {
+                                        shutdown("");
+                                    }
+                            } catch (Exception e) {
+                                shutdown("");
+                            }
+                        }
+                    }
 
-    					public void onScanCompleted(String path, Uri uri) {
-    						shutdown(uri.toString());
-    					}
+                    public void onScanCompleted(String path, Uri uri) {
+                        shutdown(uri.toString());
+                    }
 
-    					public void shutdown(String uri) {
-    						dialog.dismiss();
-    						performReturn(context, myExtras, uri.toString());
-    						MediaScannerConnection connection = mConnectionMap.get(context);
-    						if (connection != null) {
-    							connection.disconnect();
-    							mConnectionMap.put(context, null);
-    						}
-    					}
-    				};
-    				MediaScannerConnection connection = new MediaScannerConnection(context, client);
-    				mConnectionMap.put(context, connection); 
-    				connection.connect();
-    			}
-    		} else {
-    			performReturn(context, myExtras, contentUri);
-    		}
-    	}
-    }    
-    
+                    public void shutdown(String uri) {
+                        dialog.dismiss();
+                        performReturn(context, myExtras, uri.toString());
+                        MediaScannerConnection connection = mConnectionMap.get(context);
+                        if (connection != null) {
+                            connection.disconnect();
+                            mConnectionMap.put(context, null);
+                        }
+                    }
+                };
+                MediaScannerConnection connection = new MediaScannerConnection(context, client);
+                mConnectionMap.put(context, connection);
+                connection.connect();
+            }
+        } else {
+            performReturn(context, myExtras, contentUri);
+        }
+        }
+    }
+
     static private void performReturn(Context context, Bundle myExtras, String contentUri) {
-    	Intent result = new Intent(null, Uri.parse(contentUri));
-    	boolean resultSet = false;
+        Intent result = new Intent(null, Uri.parse(contentUri));
+        boolean resultSet = false;
         if (myExtras != null) {
             final Uri outputUri = (Uri)myExtras.getParcelable(MediaStore.EXTRA_OUTPUT);
             if (outputUri != null) {
@@ -197,25 +190,25 @@ public class CropImage extends MonitoredActivity {
                 }
             }
         }
-    	if (!resultSet && myExtras != null && myExtras.getBoolean("return-data")) {
-    		// The size of a transaction should be below 100K.
-    		Bitmap bitmap = null;
-    		try {
-    			bitmap = UriTexture.createFromUri(context, contentUri, 1024, 1024, 0, null);
-    		} catch (IOException e) {
-    			;
-    		} catch (URISyntaxException e) {
-    			;
-    		}
-    		if (bitmap != null) {
-    			result.putExtra("data", bitmap);
-    		}
-    	}
-    	if (!resultSet)
-    	    ((Activity) context).setResult(Activity.RESULT_OK, result);
-    	((Activity) context).finish();
-    }        
-    
+        if (!resultSet && myExtras != null && myExtras.getBoolean("return-data")) {
+            // The size of a transaction should be below 100K.
+            Bitmap bitmap = null;
+            try {
+                bitmap = UriTexture.createFromUri(context, contentUri, 1024, 1024, 0, null);
+            } catch (IOException e) {
+                ;
+            } catch (URISyntaxException e) {
+                ;
+            }
+            if (bitmap != null) {
+                result.putExtra("data", bitmap);
+            }
+        }
+        if (!resultSet)
+            ((Activity) context).setResult(Activity.RESULT_OK, result);
+        ((Activity) context).finish();
+    }
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -520,14 +513,14 @@ public class CropImage extends MonitoredActivity {
     @Override
     protected void onResume() {
         super.onResume();
-    	mApp.onResume();
-    }    
-    
+        mApp.onResume();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         BitmapManager.instance().cancelThreadDecoding(mDecodingThreads);
-    	mApp.onPause();
+        mApp.onPause();
     }
 
     @Override
@@ -622,8 +615,7 @@ public class CropImage extends MonitoredActivity {
 
             // 256 pixels wide is enough.
             if (mBitmap.getWidth() > 256) {
-                mScale = 256.0F / mBitmap.getWidth(); // CR: F => f (or change
-                                                      // all f to F).
+                mScale = 256.0F / mBitmap.getWidth(); // CR: F => f (or change all f to F).
             }
             Matrix matrix = new Matrix();
             matrix.setScale(mScale, mScale);
@@ -769,12 +761,7 @@ class CropImageView extends ImageViewTouchBase {
             if (cropImage.mWaitingToPick) {
                 recomputeFocus(event);
             } else {
-                for (int i = 0; i < mHighlightViews.size(); i++) { // CR:
-                                                                   // iterator
-                                                                   // for; if
-                                                                   // not, then
-                                                                   // i++ =>
-                                                                   // ++i.
+                for (int i = 0; i < mHighlightViews.size(); i++) { // CR: iterator for; if not, then i++ => ++i.
                     HighlightView hv = mHighlightViews.get(i);
                     int edge = hv.getHit(event.getX(), event.getY());
                     if (edge != HighlightView.GROW_NONE) {

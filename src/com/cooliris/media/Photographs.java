@@ -156,12 +156,12 @@ public class Photographs extends Activity {
             startActivityForResult(intent, PHOTO_PICKED);
         }
     }
-    
+
     @Override
     protected void onDestroy() {
-    	mApp.shutdown();
-    	super.onDestroy();
-    }   
+        mApp.shutdown();
+        super.onDestroy();
+    }
 
     protected void formatIntent(Intent intent) {
         // TODO: A temporary file is NOT necessary

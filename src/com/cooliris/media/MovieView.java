@@ -42,7 +42,7 @@ public class MovieView extends Activity {
     private static final String TAG = "MovieView";
 
     // IDs of the main menu items.
-    public static final int MENU_OPEN_URL          = 0;
+    public static final int MENU_OPEN_URL = 0;
 
     private App mApp = null; 
     private MovieViewControl mControl;
@@ -142,7 +142,7 @@ public class MovieView extends Activity {
         }
         return ret;
     }
-    
+
     @Override
     public void onDestroy() {
         mControl.onDestroy();

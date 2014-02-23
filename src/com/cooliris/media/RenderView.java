@@ -354,9 +354,9 @@ public final class RenderView extends GLSurfaceView implements GLSurfaceView.Ren
                 // Enforce the maximum loading count by removing something from the end of
                 // the loading queue, if necessary.
                 if (mLoadingCount >= MAX_LOADING_COUNT) {
-                	Texture unloadTexture = inputQueue.pollLast();
-                	unloadTexture.mState = Texture.STATE_UNLOADED;
-                	--mLoadingCount;
+                    Texture unloadTexture = inputQueue.pollLast();
+                    unloadTexture.mState = Texture.STATE_UNLOADED;
+                    --mLoadingCount;
                 }
             } else {
                 inputQueue.addLast(texture);
@@ -1077,11 +1077,11 @@ public final class RenderView extends GLSurfaceView implements GLSurfaceView.Ren
         return sLists;
     }
 
-	public int getViewWidth() {
-		return mViewWidth;
-	}
+    public int getViewWidth() {
+        return mViewWidth;
+    }
 
-	public int getViewHeight() {
-		return mViewHeight;
-	}
+    public int getViewHeight() {
+        return mViewHeight;
+    }
 }

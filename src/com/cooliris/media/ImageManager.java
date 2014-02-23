@@ -214,11 +214,11 @@ public class ImageManager {
                         degree = 270;
                         break;
                 }
-
             }
         }
         return degree;
     }
+
     private static class AddImageCancelable extends BaseCancelable<Void> {
         private final Uri mUri;
         private final ContentResolver mCr;

@@ -16,7 +16,6 @@
 
 package com.cooliris.wallpaper;
 
-//import android.app.Service;
 import com.cooliris.media.Vector3f;
 
 import android.content.Context;

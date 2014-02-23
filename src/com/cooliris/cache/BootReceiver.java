@@ -18,7 +18,6 @@ package com.cooliris.cache;
 
 import com.cooliris.media.LocalDataSource;
 import com.cooliris.media.PicasaDataSource;
-import com.cooliris.media.LocalDataSource;
 import com.cooliris.media.Utils;
 
 import android.content.BroadcastReceiver;
@@ -30,7 +29,7 @@ import android.util.Log;
 
 public class BootReceiver extends BroadcastReceiver {
     private static final String TAG = "BootReceiver";
-    
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         final String action = intent.getAction();

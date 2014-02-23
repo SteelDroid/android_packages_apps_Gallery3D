@@ -374,11 +374,7 @@ public final class MenuBar extends Layer implements PopupMenu.Listener {
                     Menu menu = menus[i];
                     menu.x = x;
                     menu.mWidth = widthPerMenu;
-                    menu.titleWidth = widthPerMenu - (20 + (menu.icon != 0 ? 45 : 0)); // TODO
-                                                                                       // factor
-                                                                                       // out
-                                                                                       // padding
-                                                                                       // etc
+                    menu.titleWidth = widthPerMenu - (20 + (menu.icon != 0 ? 45 : 0));
 
                     // fix up rounding errors by adding the last pixel to the
                     // last menu.

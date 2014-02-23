@@ -19,7 +19,6 @@ package com.cooliris.app;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.Gravity;

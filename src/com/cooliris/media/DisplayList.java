@@ -19,7 +19,6 @@ package com.cooliris.media;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 // CR: comment.
 public final class DisplayList {
     private DirectLinkedList<DisplayItem> mAnimatables = new DirectLinkedList<DisplayItem>();
@@ -53,12 +52,12 @@ public final class DisplayList {
             markIfDirty(item);
         }
     }
-    
+
     public final void setOffset(DisplayItem item, boolean useOffset, boolean pushDown, float span, float dx1, float dy1, float dx2, float dy2) {
         item.setOffset(useOffset, pushDown, span, dx1, dy1, dx2, dy2);
         markIfDirty(item);
     }
-    
+
     public final void setSingleOffset(DisplayItem item, boolean useOffset, boolean pushAway, float x, float y, float z, float spreadValue) {
         item.setSingleOffset(useOffset, pushAway, x, y, z, spreadValue);
         markIfDirty(item);

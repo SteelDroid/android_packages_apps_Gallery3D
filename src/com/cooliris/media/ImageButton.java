@@ -131,10 +131,7 @@ public final class ImageButton extends Layer {
         if (mCurrentImage != image) {
             if (animate) {
                 mFade.setValue(0f);
-                mFade.animateValue(1f, 0.25f, SystemClock.uptimeMillis()); // TODO:
-                                                                           // use
-                                                                           // frame
-                                                                           // clock.
+                mFade.animateValue(1f, 0.25f, SystemClock.uptimeMillis());
                 mPreviousImage = mCurrentImage;
             } else {
                 mFade.setValue(1f);

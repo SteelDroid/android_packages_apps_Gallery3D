@@ -67,21 +67,21 @@ public class PhotoAppWidgetConfigure extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-    	mApp.onPause();
+        mApp.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-    	mApp.onResume();
+        mApp.onResume();
     }
-    
+
     @Override
     public void onDestroy() {
-    	mApp.shutdown();
-    	super.onDestroy();
-    }    
-    
+        mApp.shutdown();
+        super.onDestroy();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && mAppWidgetId != -1) {
